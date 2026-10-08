@@ -81,12 +81,12 @@ body {
 }
 
 .features li {
-  padding: 0;
+  padding: 0 6px;
   margin-bottom: 8px;
 }
 
 .features li::before {
-  content: "";
+  content: "\2714";
   color: #22c55e;
   font-weight: 700;
   margin-right: 8px;
