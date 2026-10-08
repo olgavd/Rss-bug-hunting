@@ -33,7 +33,8 @@ body {
 }
 
 .gallery {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: flex-start;
