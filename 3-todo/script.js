@@ -17,6 +17,7 @@ function addTask() {
     return;
   }
   errorEl.hidden = true;
+  tasks = [];
   tasks.push({ id: nextId++, text: text, done: false });
   input.value = "";
   render();
