@@ -46,7 +46,7 @@ function getVisibleTasks() {
 }
 
 function updateCounter() {
-  let countDone = document.querySelectorAll('.done');
+  let countDone = document.querySelectorAll('.task:not(.done)');
   counter.textContent = "Активных задач: " + `${countDone.length}`;
 }
 
