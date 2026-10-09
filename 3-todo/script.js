@@ -37,7 +37,7 @@ function deleteTask(id, li) {
 }
 
 function clearCompleted() {
-  tasks = [];
+  tasks = tasks.filter((t) => t.done !== true);
   render();
 }
 
@@ -51,7 +51,6 @@ function updateCounter() {
 }
 
 function render() {
-  console.log(currentFilter);
 
   list.textContent = '';
 
