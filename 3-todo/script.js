@@ -23,10 +23,10 @@ function addTask() {
   render();
 }
 
-function toggleTask(id) {
+function toggleTask(id, li) {
   const task = tasks.find((t) => t.id === id);
   task.done = true;
-  render();
+  li.classList.toggle('done');
 }
 
 function deleteTask(id) {
@@ -49,19 +49,18 @@ function updateCounter() {
 
 function render() {
   const visible = getVisibleTasks();
-  for (let i = 0; i <= visible.length; i++) {
+  for (let i = 0; i < visible.length; i++) {
     const task = visible[i];
     if (task === undefined) return;
     const li = document.createElement("li");
-    li.className = "task";
-    if (task.done) {
-      li.classList.add("completed");
-    }
-
     const span = document.createElement("span");
-    span.className = "task__text";
+
+    li.className = "task";
+    span.classList.add('task__text');
+
+    span.addEventListener("click", () => toggleTask(task.id, li));
+
     span.textContent = task.text;
-    span.addEventListener("click", () => toggleTask(task.id));
 
     const del = document.createElement("button");
     del.className = "task__del";
@@ -73,6 +72,7 @@ function render() {
     list.appendChild(li);
   }
   updateCounter();
+
 }
 
 addBtn.addEventListener("dblclick", addTask);
