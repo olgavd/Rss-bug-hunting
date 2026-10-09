@@ -51,19 +51,26 @@ function updateCounter() {
 }
 
 function render() {
+  console.log(currentFilter);
+
   list.textContent = '';
 
-  const visible = getVisibleTasks();
+  let visible = getVisibleTasks();
+
+  if (currentFilter === 'active') {
+    visible = visible.filter(task => task.done === false);
+  } else if (currentFilter === 'done') {
+    visible = visible.filter(task => task.done === true);
+  }
 
   for (let i = 0; i < visible.length; i++) {
     const task = visible[i];
     const li = document.createElement("li");
     const span = document.createElement("span");
 
-    if (task.done) li.classList.add('task','done');
+    if (task.done) li.classList.add('task', 'done');
     if (!task.done) li.classList.add('task');
 
-    console.log(task.done);
     span.classList.add('task__text');
 
     span.addEventListener("click", () => toggleTask(task.id, li));
@@ -80,7 +87,6 @@ function render() {
     list.append(li);
   }
   updateCounter();
-
 }
 
 addBtn.addEventListener("dblclick", addTask);
