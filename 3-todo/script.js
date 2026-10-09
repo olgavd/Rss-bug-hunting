@@ -17,7 +17,6 @@ function addTask() {
     return;
   }
   errorEl.hidden = true;
-  tasks = [];
   tasks.push({ id: nextId++, text: text, done: false });
   input.value = "";
   render();
@@ -30,8 +29,9 @@ function toggleTask(id, li) {
 }
 
 function deleteTask(id, li) {
-  tasks.filter((t) => t.id !== id);
+  tasks = tasks.filter((t) => t.id !== id);
   li.remove();
+  updateCounter();
 }
 
 function clearCompleted() {
@@ -44,10 +44,11 @@ function getVisibleTasks() {
 }
 
 function updateCounter() {
-  counter.textContent = "Активных задач: " + tasks.length;
+  counter.textContent = "Активных задач: " + `${tasks.length}`;
 }
 
 function render() {
+  list.textContent = '';
   const visible = getVisibleTasks();
   for (let i = 0; i < visible.length; i++) {
     const task = visible[i];
