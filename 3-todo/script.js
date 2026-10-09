@@ -29,9 +29,9 @@ function toggleTask(id, li) {
   li.classList.toggle('done');
 }
 
-function deleteTask(id) {
+function deleteTask(id, li) {
   tasks.filter((t) => t.id !== id);
-  render();
+  li.remove();
 }
 
 function clearCompleted() {
@@ -65,7 +65,7 @@ function render() {
     const del = document.createElement("button");
     del.className = "task__del";
     del.textContent = "✕";
-    del.addEventListener("click", () => deleteTask(task.id));
+    del.addEventListener("click", () => deleteTask(task.id, li));
 
     li.appendChild(span);
     li.appendChild(del);
