@@ -40,7 +40,7 @@ function addToCart(id) {
   if (cartInsert) {
     increaseQty(cartInsert.id);
   } else {
-      cart.push({ id: product.id, name: product.name, price: product.price, qty: 1 });
+    cart.push({ id: product.id, name: product.name, price: product.price, qty: 1 });
   }
 
 
@@ -55,7 +55,11 @@ function increaseQty(id) {
 
 function decreaseQty(id) {
   const item = cart.find((i) => i.id === id);
-  item.qty--;
+  if (item.qty === 1) return;
+
+    item.qty--;
+  console.log(item.qty);
+
   renderCart();
 }
 
