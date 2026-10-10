@@ -30,13 +30,17 @@ function getFiltered() {
     result = products.filter((p) => p.category === category);
   }
 
+  const prepared = result.map((item, index) => ({ ...item, initialIndex: index }));
+
   if (sort === "asc") {
-    result.sort((a, b) => a.price - b.price);
+    prepared.sort((a, b) => a.price - b.price);
   } else if (sort === "desc") {
-    result.sort((a, b) => b.price - a.price);
+    prepared.sort((a, b) => b.price - a.price);
+  } else if (sort === "default") {
+    prepared.sort((a, b) => a.initialIndex - b.initialIndex);
   }
 
-  return result;
+  return prepared;
 }
 
 function render() {
