@@ -56,10 +56,7 @@ function increaseQty(id) {
 function decreaseQty(id) {
   const item = cart.find((i) => i.id === id);
   if (item.qty === 1) return;
-
-    item.qty--;
-  console.log(item.qty);
-
+  item.qty--;
   renderCart();
 }
 
@@ -84,7 +81,7 @@ function renderCart() {
   cartItemsEl.textContent = "";
   let total = "";
   cart.forEach((item) => {
-    const lineTotal = item.price;
+    const lineTotal = item.price * item.qty;
     const li = document.createElement("li");
     li.classList.add('cart-item');
     const spanName = document.createElement('span');
