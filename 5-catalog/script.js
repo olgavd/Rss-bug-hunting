@@ -23,7 +23,7 @@ function getFiltered() {
   const sort = sortSelect.value;
 
   if (search) {
-    result = result.filter((p) => p.name === search);
+    result = result.filter((p) => p.name.toLocaleLowerCase() === search.toLocaleLowerCase());
   }
 
   if (category !== "all") {
