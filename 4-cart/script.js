@@ -24,7 +24,7 @@ function renderProducts() {
     card.innerHTML = `<h3>${p.name}</h3><p>${p.price} ₽</p>`;
     const btn = document.createElement("button");
     btn.textContent = "В корзину";
-    btn.addEventListener("click", addToCart);
+    btn.addEventListener("click", () => addToCart(p.id));
     card.appendChild(btn);
     productsEl.appendChild(card);
   });
@@ -35,18 +35,27 @@ function addToCart(id) {
   if (!product) {
     return;
   }
-  cart.push({ id: product.id, name: product.name, price: product.price, qty: 1 });
+
+  const cartInsert = cart.find((p) => p.id === id);
+  if (cartInsert) {
+    increaseQty(cartInsert.id);
+  } else {
+    cart.push({ id: product.id, name: product.name, price: product.price, qty: 1 });
+  }
+
+
   renderCart();
 }
 
 function increaseQty(id) {
   const item = cart.find((i) => i.id === id);
-  item.qty;
+  item.qty++;
   renderCart();
 }
 
 function decreaseQty(id) {
   const item = cart.find((i) => i.id === id);
+  if (item.qty === 1) return;
   item.qty--;
   renderCart();
 }
@@ -57,44 +66,64 @@ function removeItem(id) {
 }
 
 function applyPromo() {
-  if ((promoInput.value = "SALE10")) {
+  if ((promoInput.value === "SALE10")) {
     discount = 0.1;
   }
   renderCart();
 }
 
 function clearCart() {
-  cart.splice(0, 1);
+  cart.splice(0);
   renderCart();
 }
 
 function renderCart() {
-  cartItemsEl.innerHTML = "";
-  let total = "";
+  cartItemsEl.textContent = "";
+  let total = 0;
+  let countCards = 0;
   cart.forEach((item) => {
-    const lineTotal = item.price;
+    const lineTotal = item.price * item.qty;
     const li = document.createElement("li");
-    li.className = "cart-item";
-    li.innerHTML = `<span>${item.name}</span>
-      <button class="qty-btn" data-act="dec">−</button>
-      <span class="qty">${item.qty}</span>
-      <button class="qty-btn" data-act="inc">+</button>
-      <span class="line">${lineTotal} ₽</span>
-      <button class="remove">✕</button>`;
+    li.classList.add('cart-item');
+    const spanName = document.createElement('span');
+    spanName.textContent = item.name;
+    const buttonDec = document.createElement('button');
+    buttonDec.classList.add('qty-btn');
+    buttonDec.dataset.act = 'dec';
+    buttonDec.textContent = '-';
+    const spanQty = document.createElement('span');
+    spanQty.classList.add('qty');
+    spanQty.textContent = item.qty;
+    const buttonInc = document.createElement('button');
+    buttonInc.classList.add('qty-btn');
+    buttonInc.dataset.act = 'inc';
+    buttonInc.textContent = '+';
+    const spanLine = document.createElement('span');
+    spanLine.textContent = lineTotal;
+    const buttonRemove = document.createElement('button');
+    buttonRemove.classList.add('remove');
+    buttonRemove.textContent = '✕';
+    li.append(spanName, buttonDec, spanQty, buttonInc, spanLine, buttonRemove);
     li.querySelector('[data-act="inc"]').addEventListener("click", () => increaseQty(item.id));
     li.querySelector('[data-act="dec"]').addEventListener("click", () => decreaseQty(item.id));
     li.querySelector(".remove").addEventListener("click", () => removeItem(item.id));
-    cartItemsEl.appendChild(li);
+    cartItemsEl.append(li);
     total += item.price * item.qty;
+    countCards += item.qty;
   });
 
   if (discount) {
     total = total - total * discount;
   }
 
-  badgeEl.textContent = cart.length;
+  badgeEl.textContent = countCards;
   totalEl.textContent = total;
-  emptyMsg.hidden = true;
+
+  if (cart.length === 0) {
+    emptyMsg.hidden = false;
+  } else {
+    emptyMsg.hidden = true;
+  }
 }
 
 promoBtn.addEventListener("click", applyPromo);

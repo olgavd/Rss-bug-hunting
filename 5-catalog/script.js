@@ -23,23 +23,28 @@ function getFiltered() {
   const sort = sortSelect.value;
 
   if (search) {
-    result = result.filter((p) => p.name === search);
+    result = result.filter((p) => p.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
   }
 
   if (category !== "all") {
-    result = products.filter((p) => p.category !== category);
+    result = result.filter((p) => p.category === category);
   }
+
+  const prepared = result.map((item, index) => ({ ...item, initialIndex: index }));
 
   if (sort === "asc") {
-    result.sort((a, b) => b.price - a.price);
+    prepared.sort((a, b) => a.price - b.price);
   } else if (sort === "desc") {
-    result.sort((a, b) => a.price - b.price);
+    prepared.sort((a, b) => b.price - a.price);
+  } else if (sort === "default") {
+    prepared.sort((a, b) => a.initialIndex - b.initialIndex);
   }
 
-  return result;
+  return prepared;
 }
 
 function render() {
+  grid.textContent = '';
   const items = getFiltered();
   items.forEach((p) => {
     const card = document.createElement("div");
@@ -47,7 +52,7 @@ function render() {
     card.innerHTML = `<h3>${p.name}</h3><p class="cat">${p.category}</p><p class="price">$${p.price}</p>`;
     grid.appendChild(card);
   });
-  countEl.textContent = products.length;
+  countEl.textContent = items.length;
 }
 
 searchInput.addEventListener("input", render);
@@ -56,4 +61,9 @@ sortSelect.addEventListener("change", render);
 
 resetBtn.addEventListener("click", () => {
   searchInput.value = "";
+  categorySelect.value = "all";
+  sortSelect.value = "default";
+  render();
 });
+
+render();

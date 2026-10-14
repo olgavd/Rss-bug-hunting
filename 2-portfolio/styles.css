@@ -33,17 +33,16 @@ body {
 }
 
 .gallery {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  gap: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, max-content));
+  justify-items: start;
+  justify-content: center;
+  gap: 20px;
   max-width: 1000px;
   margin: 0 auto;
 }
 
 .card {
-  width: 300px;
   background: #ffffff;
   border-radius: 12px;
   overflow: hidden;
@@ -54,8 +53,8 @@ body {
 }
 
 .card:hover {
-  transform: translateY(0);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  transform: translateY(-8px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .card img {
@@ -76,7 +75,6 @@ body {
 
 .tags {
   display: flex;
-  flex-direction: column;
   gap: 8px;
   margin-bottom: 14px;
 }
